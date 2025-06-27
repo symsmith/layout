@@ -20,3 +20,9 @@ This is an experiment to create a simple layout engine, inspired by [this video]
 ![an example of an image rendered by this project, mimicking the layout of a webpage, with a header containing links, a sidebar and a main content with a grid of images](demo.png)
 
 This is the layout rendered by the code in [main.ts](./src/main.ts). Frames are usually drawn in around 100µs.
+
+## Todo
+
+- Handle text
+- Respond to mouse events
+- Handle alignment

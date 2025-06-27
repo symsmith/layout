@@ -33,17 +33,12 @@ export function render(
 	const ctx = canvas.getContext("2d");
 	if (!ctx) return;
 
-	const firstFrameTime = performance.now();
 	ctx.textBaseline = "top";
-	const runtimeLoop = () => {
+	const runtimeLoop: FrameRequestCallback = (currentTime) => {
 		const start = performance.now();
 
 		ctx.clearRect(0, 0, width, height);
-		const layout = getLayout(
-			definition(performance.now() - firstFrameTime),
-			width,
-			height
-		);
+		const layout = getLayout(definition(currentTime), width, height);
 		drawNode(ctx, layout);
 
 		const end = performance.now();
@@ -59,5 +54,5 @@ export function render(
 		requestAnimationFrame(runtimeLoop);
 	};
 
-	window.onload = runtimeLoop;
+	runtimeLoop(0);
 }
