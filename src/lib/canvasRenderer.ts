@@ -3,9 +3,16 @@ import { getLayout, Node } from "./runtime";
 
 function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
 	if (node.block.backgroundColor) {
+		const scale = window.devicePixelRatio;
 		ctx.beginPath();
 		ctx.fillStyle = node.block.backgroundColor;
-		ctx.roundRect(node.x, node.y, node.width, node.height, node.block.radius);
+		ctx.roundRect(
+			node.x * scale,
+			node.y * scale,
+			node.width * scale,
+			node.height * scale,
+			(node.block.radius || 0) * scale
+		);
 		ctx.fill();
 	}
 	node.children?.map((node) => drawNode(ctx, node));
@@ -27,8 +34,14 @@ export function render(
 ) {
 	if (!canvas) return;
 
-	canvas.setAttribute("width", String(width));
-	canvas.setAttribute("height", String(height));
+	const scale = window.devicePixelRatio;
+	const scaledWidth = width * window.devicePixelRatio;
+	const scaledHeight = height * window.devicePixelRatio;
+
+	canvas.width = scaledWidth;
+	canvas.height = scaledHeight;
+	canvas.style.width = `${width}px`;
+	canvas.style.height = `${height}px`;
 
 	const ctx = canvas.getContext("2d");
 	if (!ctx) return;
@@ -37,7 +50,7 @@ export function render(
 	const runtimeLoop: FrameRequestCallback = (currentTime) => {
 		const start = performance.now();
 
-		ctx.clearRect(0, 0, width, height);
+		ctx.clearRect(0, 0, scaledWidth, scaledHeight);
 		const layout = getLayout(definition(currentTime), width, height);
 		drawNode(ctx, layout);
 
@@ -47,7 +60,7 @@ export function render(
 			const fps = Math.round(1000 / (end - start));
 
 			ctx.fillStyle = "black";
-			ctx.font = "16px sans-serif";
+			ctx.font = `${16 * scale}px sans-serif`;
 			ctx.fillText(`${fps}fps`, 0, 0);
 		}
 

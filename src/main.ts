@@ -37,7 +37,7 @@ function main() {
 				children: [
 					{
 						width: "fill",
-						radius: 7,
+						radius: 13,
 						backgroundColor: "oklch(70.8% 0 0)",
 						padding: 10,
 						gap: 8,
@@ -67,7 +67,7 @@ function main() {
 							{
 								width: 100,
 								height: "fill",
-								radius: 10,
+								radius: 13,
 								backgroundColor: "oklch(87% 0 0)",
 								padding: 10,
 								gap: 12,
@@ -84,7 +84,7 @@ function main() {
 							{
 								width: "fill",
 								height: "fill",
-								radius: 10,
+								radius: 13,
 								backgroundColor: "oklch(87% 0 0)",
 								padding: 10,
 								gap: 8,
