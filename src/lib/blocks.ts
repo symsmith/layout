@@ -1,5 +1,6 @@
 export type Block = {
 	direction?: "horizontal" | "vertical";
+	align?: "start" | "center" | "end";
 	width?: number | "fit" | "fill";
 	height?: number | "fit" | "fill";
 	gap?: number;
@@ -11,6 +12,6 @@ export type Block = {
 };
 
 export type DefaultedBlock = Required<
-	Pick<Block, "gap" | "direction" | "height" | "width" | "padding">
+	Pick<Block, "gap" | "direction" | "height" | "width" | "padding" | "align">
 > &
 	Block;

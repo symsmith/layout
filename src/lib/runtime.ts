@@ -12,6 +12,7 @@ export class Node {
 	constructor(block: Block, parent?: Node, children?: Node[]) {
 		this.block = {
 			direction: "horizontal",
+			align: "start",
 			height: "fit",
 			width: "fit",
 			gap: 0,
@@ -130,6 +131,34 @@ function computeGrowAndShrinkHeights(node: Node) {
 	return computeGrowAndShrinkSizing(node, "height");
 }
 
+function getPosition(node: Node, running: number, xOrY: "x" | "y") {
+	const dimension: Dimension = xOrY === "x" ? "width" : "height";
+	let position = running + (node.parent?.[xOrY] || 0);
+	if (
+		node.parent?.block.direction ===
+			(xOrY === "x" ? "horizontal" : "vertical") ||
+		node.parent?.block.align === "start"
+	) {
+		return position;
+	}
+	if (node.parent?.block.align === "center") {
+		return (
+			position +
+			(node.parent[dimension] -
+				node.parent.block.padding * 2 -
+				node[dimension]) /
+				2
+		);
+	}
+	if (node.parent?.block.align === "end") {
+		return (
+			position +
+			(node.parent[dimension] - node.parent.block.padding * 2 - node[dimension])
+		);
+	}
+	return position;
+}
+
 function computePositions(
 	node: Node,
 	{
@@ -143,8 +172,8 @@ function computePositions(
 	let siblingRunningX = node.x + node.block.padding;
 	let siblingRunningY = node.y + node.block.padding;
 
-	node.x = runningX + (node.parent?.x || 0);
-	node.y = runningY + (node.parent?.y || 0);
+	node.x = getPosition(node, runningX, "x");
+	node.y = getPosition(node, runningY, "y");
 
 	node.children?.forEach((child) => {
 		computePositions(child, {

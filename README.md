@@ -11,6 +11,7 @@ This is an experiment to create a simple layout engine, inspired by [this video]
 - Pseudo-flex algorithm with fill and fit sizing modes
 - Gap size between child elements
 - Padding
+- Cross-axis alignment (start, center, end)
 - Background color
 - Corner radius
 - Time-based rendering
@@ -25,4 +26,3 @@ This is the layout rendered by the code in [main.ts](./src/main.ts). Frames are 
 
 - Handle text
 - Respond to mouse events
-- Handle alignment
