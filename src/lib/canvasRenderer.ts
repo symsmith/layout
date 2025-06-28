@@ -21,33 +21,33 @@ function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
 export function render(
 	{
 		canvas,
-		width,
-		height,
 		debug,
 	}: {
 		canvas: HTMLCanvasElement | null;
-		width: number;
-		height: number;
 		debug?: boolean;
 	},
 	definition: (t: number) => Block
 ) {
 	if (!canvas) return;
 
-	const scale = window.devicePixelRatio;
-	const scaledWidth = width * window.devicePixelRatio;
-	const scaledHeight = height * window.devicePixelRatio;
-
-	canvas.width = scaledWidth;
-	canvas.height = scaledHeight;
-	canvas.style.width = `${width}px`;
-	canvas.style.height = `${height}px`;
-
-	const ctx = canvas.getContext("2d");
-	if (!ctx) return;
-
-	ctx.textBaseline = "top";
 	const runtimeLoop: FrameRequestCallback = (currentTime) => {
+		const width = document.body.offsetWidth;
+		const height = document.body.offsetHeight;
+
+		const scale = window.devicePixelRatio;
+		const scaledWidth = width * window.devicePixelRatio;
+		const scaledHeight = height * window.devicePixelRatio;
+
+		canvas.width = scaledWidth;
+		canvas.height = scaledHeight;
+		canvas.style.width = `${width}px`;
+		canvas.style.height = `${height}px`;
+
+		const ctx = canvas.getContext("2d");
+		if (!ctx) return;
+
+		ctx.textBaseline = "top";
+
 		const start = performance.now();
 
 		ctx.clearRect(0, 0, scaledWidth, scaledHeight);
