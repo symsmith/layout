@@ -1,21 +1,22 @@
 import type { Block } from "./blocks";
-import { getLayout, Node } from "./runtime";
+import { getDrawCommands, Node } from "./runtime";
 
-function drawNode(ctx: CanvasRenderingContext2D, node: Node) {
-	if (node.block.backgroundColor) {
-		const scale = window.devicePixelRatio;
-		ctx.beginPath();
-		ctx.fillStyle = node.block.backgroundColor;
-		ctx.roundRect(
-			node.x * scale,
-			node.y * scale,
-			node.width * scale,
-			node.height * scale,
-			(node.block.radius || 0) * scale
-		);
-		ctx.fill();
+function executeDrawCommands(ctx: CanvasRenderingContext2D, commands: Node[]) {
+	for (const node of commands) {
+		if (node.block.backgroundColor) {
+			const scale = window.devicePixelRatio;
+			ctx.beginPath();
+			ctx.fillStyle = node.block.backgroundColor;
+			ctx.roundRect(
+				node.x * scale,
+				node.y * scale,
+				node.width * scale,
+				node.height * scale,
+				(node.block.radius || 0) * scale
+			);
+			ctx.fill();
+		}
 	}
-	node.children?.map((node) => drawNode(ctx, node));
 }
 
 export function render(
@@ -51,8 +52,8 @@ export function render(
 		const start = performance.now();
 
 		ctx.clearRect(0, 0, scaledWidth, scaledHeight);
-		const layout = getLayout(definition(currentTime), width, height);
-		drawNode(ctx, layout);
+		const commands = getDrawCommands(definition(currentTime), width, height);
+		executeDrawCommands(ctx, commands);
 
 		const end = performance.now();
 

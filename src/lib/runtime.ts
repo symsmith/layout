@@ -189,7 +189,21 @@ function computePositions(
 	return node;
 }
 
-export function getLayout(block: Block, width: number, height: number) {
+function computeDrawCommands(root: Node): Node[] {
+	const queue = [root];
+	const commands: Node[] = [];
+	while (queue.length) {
+		const node = queue.pop()!;
+		if (node !== root) {
+			commands.push(node);
+		}
+		queue.push(...(node.children || []));
+	}
+
+	return commands;
+}
+
+export function getDrawCommands(block: Block, width: number, height: number) {
 	const tree = computeTree({ children: [block], width, height });
 
 	const fitWidths = computeFitWidths(tree);
@@ -198,6 +212,7 @@ export function getLayout(block: Block, width: number, height: number) {
 	const fitHeights = computeFitHeights(wrappedText);
 	const grownAndShrinkedHeights = computeGrowAndShrinkHeights(fitHeights);
 	const positions = computePositions(grownAndShrinkedHeights);
+	const drawCommands = computeDrawCommands(positions);
 
-	return positions;
+	return drawCommands;
 }
